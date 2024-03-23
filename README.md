@@ -3,6 +3,9 @@ Este repositório contém uma aplicação web desenvolvida em Go (Golang) que pe
 
 ### Funcionalidades
 Create: Adicionar novos produtos ao sistema.
+
 Read: Visualizar os produtos existentes.
+
 Update: Atualizar informações de produtos já cadastrados.
+
 Delete: Remover produtos do sistema.
