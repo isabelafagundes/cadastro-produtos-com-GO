@@ -2,11 +2,11 @@ package produto
 
 import (
 	"trabalhando-golang/model"
-	"trabalhando-golang/service/db"
+	"trabalhando-golang/service/database"
 )
 
 func ObterProdutos() ([]model.Produto, error) {
-	db := db.ConcetarComBancoDeDados()
+	db := database.ConcetarComBancoDeDados()
 	defer db.Close() //executa toda a função e apenas depois executa o defer
 	produtosQuery, err := db.Query(OBTER_PRODUTOS)
 	if err != nil {
@@ -28,11 +28,7 @@ func ObterProdutos() ([]model.Produto, error) {
 			panic(err)
 		}
 
-		produto.Nome = nome
-		produto.Id = id
-		produto.Descricao = descricao
-		produto.Preco = preco
-		produto.Quantidade = quantidade
+		produto = obterProduto(nome, id, descricao, preco, quantidade)
 
 		produtos = append(produtos, produto) //Adicionando item no slice
 
@@ -41,7 +37,7 @@ func ObterProdutos() ([]model.Produto, error) {
 }
 
 func CadastrarProduto(nome string, descricao string, preco float64, quantidade int) {
-	db := db.ConcetarComBancoDeDados()
+	db := database.ConcetarComBancoDeDados()
 	inserirProduto, erro := db.Prepare(SALVAR_PRODUTO)
 
 	if erro != nil {
@@ -52,7 +48,7 @@ func CadastrarProduto(nome string, descricao string, preco float64, quantidade i
 }
 
 func DeletarProduto(id int) {
-	db := db.ConcetarComBancoDeDados()
+	db := database.ConcetarComBancoDeDados()
 	deletarProduto, erro := db.Prepare(DELETAR_PRODUTO)
 	if erro != nil {
 		panic(erro)
@@ -62,7 +58,7 @@ func DeletarProduto(id int) {
 }
 
 func AtualizarProduto(id string, nome string, descricao string, preco float64, quantidade int) {
-	db := db.ConcetarComBancoDeDados()
+	db := database.ConcetarComBancoDeDados()
 	atualizarProduto, erro := db.Prepare(ATUALIZAR_PRODUTO)
 	if erro != nil {
 		panic(erro)
@@ -72,7 +68,7 @@ func AtualizarProduto(id string, nome string, descricao string, preco float64, q
 }
 
 func ObterProduto(id string) model.Produto {
-	db := db.ConcetarComBancoDeDados()
+	db := database.ConcetarComBancoDeDados()
 	produtoQuery, erro := db.Query(OBTER_PRODUTO, id)
 
 	if erro != nil {
@@ -94,12 +90,18 @@ func ObterProduto(id string) model.Produto {
 			panic(erro)
 		}
 
-		produto.Nome = nome
-		produto.Id = id
-		produto.Descricao = descricao
-		produto.Preco = preco
-		produto.Quantidade = quantidade
+		produto = obterProduto(nome, id, descricao, preco, quantidade)
 	}
 	defer db.Close()
+	return produto
+}
+
+func obterProduto(nome string, id int, descricao string, preco float64, quantidade int) model.Produto {
+	produto := model.Produto{}
+	produto.Nome = nome
+	produto.Id = id
+	produto.Descricao = descricao
+	produto.Preco = preco
+	produto.Quantidade = quantidade
 	return produto
 }

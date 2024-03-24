@@ -20,10 +20,10 @@
                     <td>{{.Descricao}}</td>
                     <td>{{.Preco}}</td>
                     <td>{{.Quantidade}}</td>
+                    <td><a href="/edit?id={{.Id}}" class="btn btn-info">Editar</a></td>
                     <td>
                         <button onclick="onDelete('{{.Id}}')" class="btn btn-danger">Deletar</button>
                     </td>
-                    <td><a href="/edit?id={{.Id}}" class="btn btn-info">Editar</a></td>
                 </tr>
                 {{end}}
                 </tbody>
